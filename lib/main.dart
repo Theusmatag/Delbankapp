@@ -1,10 +1,17 @@
-import 'package:delcred_app/view/bestsellers.dart';
-import 'package:delcred_app/view/bookreviews.dart';
+import 'package:delcred_app/factory/inject.dart';
+import 'package:delcred_app/view/best_sellers.dart';
+import 'package:delcred_app/view/best_sellers_details.dart';
+import 'package:delcred_app/view/book_reviews.dart';
 import 'package:delcred_app/view/home.dart';
+import 'package:delcred_app/view/themes/themes.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-void main() {
+import 'env/env.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Env.instance.load();
+  Inject.init();
   runApp(const MainApp());
 }
 
@@ -14,22 +21,15 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-          textTheme: TextTheme(
-            titleLarge: GoogleFonts.openSans(
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
-          ),
-          useMaterial3: true,
-          appBarTheme: const AppBarTheme(
-            centerTitle: true,
-          )),
+      themeMode: ThemeMode.system,
+      theme: ligththeme,
+      darkTheme: darktheme,
       debugShowCheckedModeBanner: false,
       routes: {
         '/': (context) => const Home(),
-        'bestsellers': (context) => const BestSellers(),
-        'bookreviews': (context) => const BookReviews()
+        'bestsellers': (context) => const BestSellerScreen(),
+        'bestsellersdetails': (context) => const BestSellerDetails(),
+        'bookreviews': (context) => const BookReviewScreen(),
       },
     );
   }
